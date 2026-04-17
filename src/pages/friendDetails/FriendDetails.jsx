@@ -108,6 +108,25 @@ const FriendDetails = () => {
               </div>
             </div>
 
+            {/* Relationship Goal */}
+<div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+  
+  <div>
+    <h3 className="text-lg font-bold text-[#244D3F]">
+      Relationship Goal
+    </h3>
+
+    <p className="text-[#64748B] mt-1">
+      Connect every <span className="font-semibold">{friend.goal} days</span>
+    </p>
+  </div>
+
+  <button className="px-4 py-2 text-sm border border-gray-200 rounded-md hover:bg-gray-50 transition">
+    Edit
+  </button>
+
+</div>
+
             <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
               <h3 className="text-lg font-bold text-[#244D3F] tracking-tight mb-6 uppercase text-sm">Quick Check-In</h3>
               <div className="grid grid-cols-3 gap-4">
