@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Ahsan Rahman",
+    "picture": "https://i.ibb.co.com/wZQhp3WW/32.jpg",
+    "email": "ahsan.rahman@gmail.com",
+    "days_since_contact": 18,
+    "status": "overdue",
+    "tags": ["university", "close friend"],
+    "bio": "Met during university group projects. We still talk about tech and career goals.",
+    "goal": 14,
+    "next_due_date": "2026-04-05"
+  },
+  {
+    "id": 2,
+    "name": "Nusrat Jahan",
+    "picture": "https://i.ibb.co.com/pvKqPh8Z/sophia.jpg",
+    "email": "nusrat.jahan@yahoo.com",
+    "days_since_contact": 10,
+    "status": "almost due",
+    "tags": ["school", "best friend"],
+    "bio": "School friend who always checks in. We share everything from life updates to random memes.",
+    "goal": 14,
+    "next_due_date": "2026-04-21"
+  },
+  {
+    "id": 3,
+    "name": "Imran Hossain",
+    "picture": "https://i.ibb.co.com/wZQhp3WW/32.jpgg",
+    "email": "imran.hossain@outlook.com",
+    "days_since_contact": 5,
+    "status": "on-track",
+    "tags": ["office", "gym buddy"],
+    "bio": "Colleague and workout partner. We motivate each other to stay consistent.",
+    "goal": 10,
+    "next_due_date": "2026-04-22"
+  },
+  {
+    "id": 4,
+    "name": "Sadia Karim",
+    "picture": "https://i.ibb.co.com/pvKqPh8Z/sophia.jpg",
+    "email": "sadia.karim@gmail.com",
+    "days_since_contact": 22,
+    "status": "overdue",
+    "tags": ["neighbor", "family friend"],
+    "bio": "Grew up in the same neighborhood. Our families are closely connected.",
+    "goal": 14,
+    "next_due_date": "2026-03-30"
+  },
+  {
+    "id": 5,
+    "name": "Tanvir Ahmed",
+    "picture": "https://i.ibb.co.com/rKJ26n7K/tanvir.jpg",
+    "email": "tanvir.ahmed@gmail.com",
+    "days_since_contact": 12,
+    "status": "almost due",
+    "tags": ["university", "project partner"],
+    "bio": "Worked on multiple coding projects together. Still collaborate occasionally.",
+    "goal": 14,
+    "next_due_date": "2026-04-19"
+  },
+  {
+    "id": 6,
+    "name": "Farhana Akter",
+    "picture": "https://i.ibb.co.com/pvKqPh8Z/sophia.jpg",
+    "email": "farhana.akter@gmail.com",
+    "days_since_contact": 3,
+    "status": "on-track",
+    "tags": ["cousin", "family"],
+    "bio": "https://i.ibb.co.com/60rF1DR5/farhana.jpg",
+    "goal": 7,
+    "next_due_date": "2026-04-21"
+  },
+  {
+    "id": 7,
+    "name": "Rakib Hasan",
+    "picture": "https://i.ibb.co.com/wZQhp3WW/32.jpg",
+    "email": "rakib.hasan@gmail.com",
+    "days_since_contact": 16,
+    "status": "overdue",
+    "tags": ["college", "football"],
+    "bio": "Played football together in college. Always fun to catch up on old memories.",
+    "goal": 14,
+    "next_due_date": "2026-04-08"
+  },
+  {
+    "id": 8,
+    "name": "Mithila Chowdhury",
+    "picture": "https://i.ibb.co.com/JFxVzfqY/mithila.jpg",
+    "email": "mithila.c@gmail.com",
+    "days_since_contact": 7,
+    "status": "on-track",
+    "tags": ["online friend", "design"],
+    "bio": "Met through an online design community. We share feedback on creative work.",
+    "goal": 10,
+    "next_due_date": "2026-04-20"
+  }
+]
