@@ -1,139 +1,135 @@
-import React from 'react';
-import { useParams } from 'react-router';
-import useFriends from '../../hooks/useFriends';
-import { LuPhoneCall } from 'react-icons/lu';
-import { IoMdText } from 'react-icons/io';
-import { IoVideocamOutline } from 'react-icons/io5';
-import { HiBellSnooze } from 'react-icons/hi2';
-import { BsFillArchiveFill } from 'react-icons/bs';
-import { RiDeleteBinLine } from 'react-icons/ri';
+import React, { useContext } from "react";
+import { useParams } from "react-router";
+import useFriends from "../../hooks/useFriends";
+import { HashLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { FaRegClock, FaRegTrashAlt } from "react-icons/fa";
+import { FiArchive, FiVideo } from "react-icons/fi";
+import { FriendContext } from "../../context/FriendContext";
+import { TbPhoneCall } from "react-icons/tb";
+import { BiMessageDots } from "react-icons/bi";
 
 const FriendDetails = () => {
-    const {id} = useParams();
-    
-    // get data by custom hook
-    const {friends, loading} = useFriends();
-    console.log(friends, loading);
-    if (loading) {
-            return <p>Loading...</p>;
-        }
+  const { id } = useParams();
+  const { friends, loading } = useFriends();
+  const { addInteraction } = useContext(FriendContext);
 
+  const friend = friends ? friends.find((friend) => String(friend.id) === id) : null;
 
-    // expectedFriend
-    const expectedFriend = friends.find(
-        friend => friend.id == id
-    );
+  const statusColors = {
+    "overdue": "#EF4444",
+    "on-track": "#244D3F",
+    "almost due": "#EFAD44",
+    "snoozed": "#60A5FA",
+    "archived": "#6B7280"
+  };
 
-    if (!expectedFriend) {
-        return <p>Friend not found</p>;
-    }
+  if (loading) return (
+    <div className="h-screen flex justify-center items-center">
+      <HashLoader color="#244D3F" />
+    </div>
+  );
 
-    return (
-  <div className="container mx-auto my-20">
-    
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+  if (!friend) return (
+    <div className="h-screen flex justify-center items-center text-[#244D3F] font-bold">
+      Friend not found!
+    </div>
+  );
 
-      {/* LEFT CARD */}
-      <div className="bg-base-100 shadow rounded-xl p-6 text-center h-full">
-        <img
-          src={expectedFriend.picture}
-          alt={expectedFriend.name}
-          className="w-20 h-20 rounded-full mx-auto"
-        />
+  const handleAction = (type) => {
+    const newEntry = {
+      // ✅ Added Math.random() to prevent duplicate key error on fast clicks
+      id: `${Date.now()}-${Math.random()}`,
+      title: `${type} with ${friend.name}`,
+      type: type,
+      date: new Date().toLocaleDateString(),
+    };
+    addInteraction(newEntry);
+    toast.success(`${type} logged for ${friend.name}`);
+  };
 
-        <h2 className="text-xl font-semibold mt-3">
-          {expectedFriend.name}
-        </h2>
+  const currentStatus = friend.status?.toLowerCase() || "";
+  const bgColor = statusColors[currentStatus] || "#9CA3AF";
 
-        <span className={`badge font-semibold uppercase py-4 rounded-2xl mt-2 
-          ${expectedFriend.status === "overdue"
-            ? "badge-error"
-            : expectedFriend.status === "almost due"
-              ? "badge-warning"
-              : "badge-success"}`}>
-          {expectedFriend.status}
-        </span>
+  return (
+    <div className="h-auto py-10 pb-20">
+      <div className="container mx-auto max-w-5xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center">
+              <img 
+                src={friend.picture} 
+                alt={friend.name} 
+                className="w-24 h-24 rounded-full mx-auto object-cover border-4 border-white shadow-sm"
+              />
+              <h2 className="text-xl font-bold mt-4 text-gray-800">{friend.name}</h2>
+              <span 
+                className="inline-block px-4 py-1 rounded-full text-[12px] font-medium tracking-wider mt-2 text-white"
+                style={{ backgroundColor: bgColor }}
+              >
+                {friend.status}
+              </span>
+              <div className="mt-3">
+                <span className="bg-[#CBFADB] text-[#244D3F] px-3 py-1 rounded-full text-[12px] font-medium uppercase tracking-tighter">
+                  {friend.tags?.[0] || "FRIEND"}
+                </span>
+              </div>
+              <p className="text-gray-500 text-sm italic mt-4">"{friend.bio || 'Friend'}"</p>
+            </div>
 
-        <div className="flex justify-center gap-2 mt-4 flex-wrap">
-          {expectedFriend.tags.map((tag, i) => (
-            <span key={i} className="badge bg-green-200 font-semibold uppercase py-4 rounded-2xl">
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <p className="italic mt-3 text-[#64748B]">
-          "{expectedFriend.bio}"
-        </p>
-
-        <p className="text-md mt-2 text-gray-400">
-          Preferred: email
-        </p>
-
-        <div className="mt-6 space-y-2">
-          <button className="btn w-full"> <HiBellSnooze></HiBellSnooze> Snooze 2 Weeks</button>
-          <button className="btn w-full"> <BsFillArchiveFill></BsFillArchiveFill> Archive</button>
-          <button className="btn w-full text-orange-700"> <RiDeleteBinLine></RiDeleteBinLine> Delete</button>
-        </div>
-      </div>
-
-      {/* RIGHT SECTION */}
-      <div className="lg:col-span-2 space-y-8 h-full flex flex-col">
-
-        {/* TOP STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
-
-          <div className="bg-base-100 shadow p-12 text-center rounded-xl">
-            <h2 className="text-3xl font-bold text-[#244D3F] mb-3">
-              {expectedFriend.days_since_contact}
-            </h2>
-            <p className="text-[#64748B]">Days Since Contact</p>
+            <div className="space-y-2">
+              <button className="w-full py-3 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-700 font-medium flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors">
+                <FaRegClock className="text-lg" /> Snooze 2 Weeks
+              </button>
+              <button className="w-full py-3 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-700 font-medium flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors">
+                <FiArchive className="text-lg" /> Archive
+              </button>
+              <button className="w-full py-3 bg-white border border-red-100 rounded-lg shadow-sm text-red-500 font-medium flex items-center justify-center gap-3 hover:bg-red-50 transition-colors">
+                <FaRegTrashAlt className="text-lg" /> Delete
+              </button>
+            </div>
           </div>
 
-          <div className="bg-base-100 shadow p-12 text-center rounded-xl">
-            <h2 className="text-3xl font-bold text-[#244D3F] mb-3">
-              {expectedFriend.goal}
-            </h2>
-            <p className="text-[#64748B]">Goal (Days)</p>
-          </div>
+          {/* Main Content */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                <h3 className="text-3xl font-bold text-[#244D3F]">{friend.days_since_contact}</h3>
+                <p className="text-[#64748B] font-normal text-[16px] mt-1">Days Since Contact</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                <h3 className="text-3xl font-bold text-[#244D3F]">{friend.goal}</h3>
+                <p className="text-[#64748B] font-normal text-[16px] mt-1">Goal (Days)</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                <h3 className="text-xl font-normal text-[#244D3F] mt-1">{friend.next_due_date}</h3>
+                <p className="text-[#64748B] text-[16px] mt-2">Next Due</p>
+              </div>
+            </div>
 
-          <div className="bg-base-100 shadow p-12 text-center rounded-xl">
-            <h2 className="text-xl font-bold text-[#244D3F] mb-3">
-              {expectedFriend.next_due_date}
-            </h2>
-            <p className="text-[#64748B]">Next Due</p>
-          </div>
-
-        </div>
-
-        {/* RELATIONSHIP GOAL */}
-        <div className="bg-base-100 shadow p-6 rounded-xl flex justify-between items-center">
-          <div>
-            <h3 className="font-bold text-lg text-[#244D3F] mb-3">
-              Relationship Goal
-            </h3>
-            <p>
-              Connect every <span className="font-bold">{expectedFriend.goal} days</span>
-            </p>
-          </div>
-          <button className="btn btn-sm">Edit</button>
-        </div>
-
-        {/* QUICK ACTION */}
-        <div className="bg-base-100 shadow p-6 rounded-xl">
-          <h3 className="font-bold mb-4 text-[#244D3F]">Quick Check-In</h3>
-
-          <div className="grid grid-cols-3 gap-4">
-            <button className="btn"> <LuPhoneCall></LuPhoneCall> Call</button>
-            <button className="btn"> <IoMdText></IoMdText> Text</button>
-            <button className="btn"> <IoVideocamOutline></IoVideocamOutline> Video</button>
+            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+              <h3 className="text-lg font-bold text-[#244D3F] tracking-tight mb-6 uppercase text-sm">Quick Check-In</h3>
+              <div className="grid grid-cols-3 gap-4">
+                <button onClick={() => handleAction("Call")} className="flex flex-col items-center justify-center gap-3 p-6 bg-gray-50 rounded-xl hover:bg-[#E2E2E2] transition-all">
+                  <TbPhoneCall size={22} className="text-[#1F2937]" />
+                  <span className="font-medium">Call</span>
+                </button>
+                <button onClick={() => handleAction("Text")} className="flex flex-col items-center justify-center gap-3 p-6 bg-gray-50 rounded-xl hover:bg-[#E2E2E2] transition-all">
+                  <BiMessageDots size={22} className="text-[#1F2937]" />
+                  <span className="font-medium">Text</span>
+                </button>
+                <button onClick={() => handleAction("Video")} className="flex flex-col items-center justify-center gap-3 p-6 bg-gray-50 rounded-xl hover:bg-[#E2E2E2] transition-all">
+                  <FiVideo size={22} className="text-[#1F2937]" />
+                  <span className="font-medium">Video</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
-  </div>
-);
+  );
 };
-            
+
 export default FriendDetails;
